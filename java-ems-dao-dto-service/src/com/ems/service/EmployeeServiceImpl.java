@@ -30,9 +30,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	public void updateEmployee(Employee e) {
-		
+			empDAO.updateEmployee(e);
 		
 	}
+	
 
 	@Override
 	public Employee findEmployee(Employee e) throws EmployeeNotFoundException {

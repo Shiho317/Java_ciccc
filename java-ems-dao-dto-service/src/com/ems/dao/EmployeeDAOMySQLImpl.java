@@ -19,6 +19,7 @@ public class EmployeeDAOMySQLImpl implements EmployeeDAO{
 	private ResultSet resultSet = null;
 	//performing database operations
 	private static final String INSERT_COMMAND = "INSERT INTO employees_tbl VALUES (?,?,?,?)"; // placeholder ---> ?
+	private static final String UPDATE_COMMAND = "UPDATE employees_tbl SET name = ?, department = ?, daysAttended = ? WHERE id = ?";
 	private static final String DELETE_COMMAND = "DELETE FROM employees_tbl WHERE id=?";
 	private static final String FIND_COMMAND = "SELECT * FROM employees_tbl WHERE id=?";
 	private static final String SELECT_ALL = "SELECT * FROM employees_tbl";
@@ -91,6 +92,29 @@ public class EmployeeDAOMySQLImpl implements EmployeeDAO{
 
 	@Override
 	public void updateEmployee(Employee e) {
+    int i = 0;
+		
+		try {
+			statement = conn.prepareStatement(UPDATE_COMMAND);
+			statement.setString(1, e.getName());
+			statement.setString(2, e.getDepartment());
+			statement.setInt(3, e.getDaysAttended());
+			statement.setInt(4, e.getId());
+			i = statement.executeUpdate();
+		} catch (SQLException e1) {
+			System.out.println("Update operation failed... Unable to execute UPDATE");
+			e1.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		if(i > 1) {
+			System.out.println("Record Updated...");
+		}
 		
 		
 	}
@@ -164,4 +188,4 @@ public class EmployeeDAOMySQLImpl implements EmployeeDAO{
 
 }
 
-}
+
